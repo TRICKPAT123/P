@@ -354,12 +354,22 @@ class RoundedBorder implements javax.swing.border.Border {
     @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         Graphics2D g2 = (Graphics2D) g.create();
+
+        // Enable anti-aliasing for smoother and sharper rendering
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        // Optional: improve stroke rendering quality
+        g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+
         g2.setColor(color);
-        g2.setStroke(new BasicStroke(2)); // Optional: set border thickness
-        g2.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
+        g2.setStroke(new BasicStroke(2f)); // 2-pixel stroke for visibility
+
+        // Important: reduce width/height by 2 to prevent clipping or blur
+        g2.drawRoundRect(x + 1, y + 1, width - 3, height - 3, radius, radius);
         g2.dispose();
     }
 }
+
 
 
 
