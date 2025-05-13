@@ -1,6 +1,6 @@
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
+//import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 import src.panels.ExercisePanel;
@@ -13,10 +13,11 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
-import java.awt.image.BufferedImage;
+//import java.awt.image.BufferedImage;
 import java.io.InputStream;
 
 public class FitMatchApp extends JFrame {
+
 private JButton createAnimatedTab(String label, String iconPath, Runnable onClick) {
     ImageIcon baseIcon = new ImageIcon(iconPath);
     Image originalImage = baseIcon.getImage();
@@ -76,9 +77,7 @@ private JButton createAnimatedTab(String label, String iconPath, Runnable onClic
     return button;
 }
 
-
     private JPanel contentPanel; // This will hold the center content
-    private JButton addButton;   // Floating "Add" Button
 
     public FitMatchApp() {
         setUndecorated(true);
@@ -93,33 +92,6 @@ private JButton createAnimatedTab(String label, String iconPath, Runnable onClic
         GradientPanel gradientPanel = new GradientPanel();
         gradientPanel.setLayout(null);  // Use absolute positioning
         setContentPane(gradientPanel);
-
-        // // Navigation bar at bottom (back, home, recent)
-        // JPanel navBar = new JPanel();
-        // navBar.setLayout(new FlowLayout(FlowLayout.CENTER, 40, 0));
-        // navBar.setBounds(0, 800, 400, 40);
-        // navBar.setOpaque(false);
-
-        // JButton backBtn = createNavButton("\u25C1");
-        // backBtn.addActionListener(e -> {
-        //     dispose();
-        //     new FitMatchApp().setVisible(true);
-        // });
-
-        // JButton homeBtn = createNavButton("\u25CB");
-        // homeBtn.addActionListener(e -> {
-        //     JOptionPane.showMessageDialog(this, "Home button pressed!");
-        // });
-
-        // JButton recentBtn = createNavButton("\u25A2");
-        // recentBtn.addActionListener(e -> {
-        //     JOptionPane.showMessageDialog(this, "Recent apps button pressed!");
-        // });
-
-        // navBar.add(backBtn);
-        // navBar.add(homeBtn);
-        // navBar.add(recentBtn);
-        // gradientPanel.add(navBar);
  
        JPanel bottomMenu = new JPanel() {
     @Override
@@ -425,9 +397,9 @@ contentPanel.add(Work); // Add the panel to the content panel
                 repaint();
             }
         
-            public int getProgress() {
-                return progress;
-            }
+            // public int getProgress() {
+            //     return progress;
+            // }
         
             @Override
             protected void paintComponent(Graphics g) {
@@ -629,19 +601,6 @@ class SoftRoundedBorder extends RoundedBorder {
 }
 
 
-    
-    private JButton createNavButton(String symbol) {
-        JButton button = new JButton(symbol);
-        button.setFont(new Font("Dialog", Font.PLAIN, 24));
-        button.setForeground(Color.WHITE);
-        button.setOpaque(false);
-        button.setContentAreaFilled(false);
-        button.setBorderPainted(false);
-        button.setFocusPainted(false);
-        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        return button;
-    }
-
 
 // Removed unused method getScaledImage
 class GradientBoxLabel extends JLabel {
@@ -676,8 +635,9 @@ class GradientBoxLabel extends JLabel {
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
-          Color color1 = new Color(73, 39, 184); //rgb(73, 39, 184)
-          Color color2 = new Color(153, 102, 204);  //rgb(50, 25, 65)
+             Color color1 = new Color(153, 102, 204);  //rgb(50, 25, 65)
+          Color color2 = new Color(73, 39, 184); //rgb(73, 39, 184)
+         
             int width = getWidth();
             int height = getHeight();
             GradientPaint gp = new GradientPaint(0, 0, color1, 0, height, color2);

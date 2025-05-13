@@ -6,7 +6,7 @@ import java.util.*;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
-import src.panels.Style.RoundedBorder;
+
 
 public class ExercisePanel extends JPanel {
 
@@ -50,13 +50,14 @@ public class ExercisePanel extends JPanel {
         workoutDisplayPanel = new JPanel(null);
         workoutDisplayPanel.setBounds(21, 100, 350, 300);
         workoutDisplayPanel.setOpaque(false);
-        workoutDisplayPanel.setBorder(new RoundedBorder(20));
+        workoutDisplayPanel.setBorder(new RoundedBorder(20, Color.WHITE));
         backgroundPanel.add(workoutDisplayPanel);
 
         //// Day Buttons Panel
 JPanel dayButtonsPanel = new JPanel(null);
 dayButtonsPanel.setBounds(10, 10, 70, 290);
 dayButtonsPanel.setOpaque(false);
+
 workoutDisplayPanel.add(dayButtonsPanel);
 
 int yOffset = 0;
@@ -86,6 +87,8 @@ for (String day : days) {
         exerciseListPanel.setBounds(80, 10, 250, 280);
         exerciseListPanel.setOpaque(false);
         exerciseListPanel.setName("exerciseListPanel");
+     
+
         workoutDisplayPanel.add(exerciseListPanel);
 
         // "Add Exercise" Text
@@ -137,7 +140,9 @@ backgroundPanel.add(formPanel);
         // Day Selector Panel
         JPanel daySelectorPanel = new JPanel(null);
         daySelectorPanel.setBounds(20, 90, 290, 50);
-        daySelectorPanel.setBorder(new RoundedBorder(10));
+         daySelectorPanel.setBorder(new RoundedBorder(10, Color.WHITE));
+
+       // daySelectorPanel.setBorder(new RoundedBorder(10));
         daySelectorPanel.setOpaque(false);
         formPanel.add(daySelectorPanel);
 
@@ -224,13 +229,6 @@ backgroundPanel.add(formPanel);
 }
 
 
-    // private void styleButtonSimple(JButton btn) {
-    //     btn.setOpaque(false);
-    //     btn.setContentAreaFilled(false);
-    //     btn.setForeground(Color.WHITE);
-    //     btn.setBorder(new RoundedBorder(20));
-    //     btn.setFocusPainted(false);
-    // }
 
     private void animateDayButton(JButton button) {
         if (activeDayButton != null && activeDayButton != button) {
@@ -330,18 +328,41 @@ backgroundPanel.add(formPanel);
         samplePlans.put("Saturday", Arrays.asList("Yoga", "Stretching"));
         samplePlans.put("Sunday", Arrays.asList("Rest"));
         return samplePlans;
+    
+        // ... your existing ExercisePanel code ...
+    }
+    // RoundedBorder class inside the same file
+class RoundedBorder implements javax.swing.border.Border {
+    private final int radius;
+    private final Color color;
+
+    public RoundedBorder(int radius, Color color) {
+        this.radius = radius;
+        this.color = color;
     }
 
-    public class GradientPanel extends JPanel {
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            Graphics2D g2d = (Graphics2D) g;
-            Color color1 = new Color(73, 39, 184);
-            Color color2 = new Color(153, 102, 204);
-            GradientPaint gp = new GradientPaint(0, 0, color1, 0, getHeight(), color2);
-            g2d.setPaint(gp);
-            g2d.fillRect(0, 0, getWidth(), getHeight());
-        }
+    @Override
+    public Insets getBorderInsets(Component c) {
+        return new Insets(radius + 1, radius + 1, radius + 2, radius);
+    }
+
+    @Override
+    public boolean isBorderOpaque() {
+        return false;
+    }
+
+    @Override
+    public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setColor(color);
+        g2.setStroke(new BasicStroke(2)); // Optional: set border thickness
+        g2.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
+        g2.dispose();
     }
 }
+
+
+
+}
+
+

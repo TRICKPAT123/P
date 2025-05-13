@@ -11,9 +11,9 @@ import java.net.URL;
 
 public class UserPanel extends JPanel {
 
-     JTextField ageField, heightField, weightField;
+    JTextField ageField, heightField, weightField;
     private JComboBox<String> activityLevelBox, dietPreferenceBox, workoutTypeBox;
-     JCheckBox loseWeightBox, buildMuscleBox, maintainBox;
+    JCheckBox loseWeightBox, buildMuscleBox, maintainBox;
     private JButton continueButton;
 
     public UserPanel() {
@@ -50,7 +50,6 @@ public class UserPanel extends JPanel {
         String[] goals = {"Lose Weight", "Build Muscle", "Maintain"};
         int y = 25;
 
-        // Load icons safely and scale them to fit within the checkbox size
         URL uncheckedURL = getClass().getResource("/images/square.png");
         URL checkedURL = getClass().getResource("/images/check.png");
 
@@ -94,6 +93,8 @@ public class UserPanel extends JPanel {
                     break;
             }
         }
+
+        setupGoalCheckboxBehavior();
 
         // Step 2: Personal Detail
         JPanel personalPanel = createRoundedPanel();
@@ -157,7 +158,6 @@ public class UserPanel extends JPanel {
         continueButton.setBorder(new RoundedBorder(15, Color.WHITE));
         continueButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        // Hover effect
         continueButton.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -175,14 +175,67 @@ public class UserPanel extends JPanel {
         backgroundPanel.add(continueButton);
     }
 
-    // Constructor with action
+    // Constructor with onContinue action
     public UserPanel(Runnable onContinue) {
         this();
         continueButton.addActionListener((ActionEvent e) -> {
-            if (onContinue != null) {
+            if (areInputsValid()) {
                 onContinue.run();
+            } else {
+                JOptionPane.showMessageDialog(this, "Please complete all fields and select a goal.", "Input Error", JOptionPane.ERROR_MESSAGE);
             }
         });
+    }
+
+    private void setupGoalCheckboxBehavior() {
+        JCheckBox[] checkboxes = {loseWeightBox, buildMuscleBox, maintainBox};
+        for (JCheckBox cb : checkboxes) {
+            cb.addActionListener(e -> {
+                for (JCheckBox other : checkboxes) {
+                    if (other != cb) {
+                        other.setSelected(false);
+                    }
+                }
+            });
+        }
+    }
+
+    private boolean areInputsValid() {
+        return !ageField.getText().trim().isEmpty() &&
+                !heightField.getText().trim().isEmpty() &&
+                !weightField.getText().trim().isEmpty() &&
+                (loseWeightBox.isSelected() || buildMuscleBox.isSelected() || maintainBox.isSelected());
+    }
+
+    public String getSelectedGoal() {
+        if (loseWeightBox.isSelected()) return "Lose Weight";
+        if (buildMuscleBox.isSelected()) return "Build Muscle";
+        if (maintainBox.isSelected()) return "Maintain";
+        return "";
+    }
+
+    public int getAge() {
+        return Integer.parseInt(ageField.getText().trim());
+    }
+
+    public double getUserHeight() {
+        return Double.parseDouble(heightField.getText().trim());
+    }
+
+    public double getWeight() {
+        return Double.parseDouble(weightField.getText().trim());
+    }
+
+    public String getActivityLevel() {
+        return (String) activityLevelBox.getSelectedItem();
+    }
+
+    public String getDietPreference() {
+        return (String) dietPreferenceBox.getSelectedItem();
+    }
+
+    public String getWorkoutType() {
+        return (String) workoutTypeBox.getSelectedItem();
     }
 
     private JPanel createRoundedPanel() {
@@ -224,28 +277,25 @@ public class UserPanel extends JPanel {
         return field;
     }
 
-    // Create Transparent ComboBox
-   private JComboBox<String> createTransparentComboBox(String[] options) {
-    JComboBox<String> comboBox = new JComboBox<>(options);
-    comboBox.setOpaque(true);  // Set opaque to true to apply a background color
-    comboBox.setBackground(new Color(138, 43, 226, 120)); // Semi-transparent black background
-    comboBox.setForeground(Color.WHITE);  // Set text color to white
-    comboBox.setUI(new BasicComboBoxUI() {
-        @Override
-        protected ComboPopup createPopup() {
-            ComboPopup popup = super.createPopup();
-            JComponent popupComponent = (JComponent) popup;
-            popupComponent.setBackground(new Color(138, 43, 226, 120));  // Semi-transparent background for popup
-            popupComponent.setOpaque(true);  // Ensure the popup also has a background color
-            return popup;
-        }
-    });
-    comboBox.setBorder(null);  // Remove the border to make it visually clean
-    return comboBox;
-}
+    private JComboBox<String> createTransparentComboBox(String[] options) {
+        JComboBox<String> comboBox = new JComboBox<>(options);
+        comboBox.setOpaque(true);
+        comboBox.setBackground(new Color(138, 43, 226, 120));
+        comboBox.setForeground(Color.WHITE);
+        comboBox.setUI(new BasicComboBoxUI() {
+            @Override
+            protected ComboPopup createPopup() {
+                ComboPopup popup = super.createPopup();
+                JComponent popupComponent = (JComponent) popup;
+                popupComponent.setBackground(new Color(138, 43, 226, 120));
+                popupComponent.setOpaque(true);
+                return popup;
+            }
+        });
+        comboBox.setBorder(null);
+        return comboBox;
+    }
 
-
-    // Rounded Border Class
     public static class RoundedBorder extends AbstractBorder {
         private int radius;
         private Color color;
@@ -266,18 +316,17 @@ public class UserPanel extends JPanel {
 
         @Override
         public Insets getBorderInsets(Component c) {
-            return new Insets(5, 5, 5, 5); // Adjust padding for the rounded border
+            return new Insets(5, 5, 5, 5);
         }
     }
 
-    // GradientPanel Class
     class GradientPanel extends JPanel {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
-             Color color1 = new Color(73, 39, 184); //rgb(73, 39, 184)
-          Color color2 = new Color(153, 102, 204);  //rgb(50, 25, 65)
+            Color color1 = new Color(153, 102, 204);
+            Color color2 = new Color(73, 39, 184);
             int width = getWidth();
             int height = getHeight();
             GradientPaint gp = new GradientPaint(0, 0, color1, 0, height, color2);

@@ -3,8 +3,9 @@ package src.panels;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class NutritionPanel extends JPanel {
 
@@ -36,43 +37,41 @@ public class NutritionPanel extends JPanel {
 
         // Meal panel with transparent background and rounded border
         JPanel mealPanel = new JPanel() {
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        // Smooth gradient: deep violet to purple
-        GradientPaint gradient = new GradientPaint(0, 0, new Color(0x702CFB), 0, getHeight(), new Color(0x5F26E3));
-        g2d.setPaint(gradient);
-        g2d.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20); // Rounded fill
-    }
-};
-mealPanel.setLayout(null);
-mealPanel.setOpaque(false);
-mealPanel.setBorder(BorderFactory.createEmptyBorder()); // Clear default border
-mealPanel.setBorder(new RoundedBorder(20));             // Add your custom rounded border
-mealPanel.setBounds(26, 145, 350, 140);
-backgroundPanel.add(mealPanel);
-
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g;
+                // Smooth gradient: deep violet to purple
+                GradientPaint gradient = new GradientPaint(0, 0, new Color(0x702CFB), 0, getHeight(), new Color(0x5F26E3));
+                g2d.setPaint(gradient);
+                g2d.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20); // Rounded fill
+            }
+        };
+        mealPanel.setLayout(null);
+        mealPanel.setOpaque(false);
+        mealPanel.setBorder(BorderFactory.createEmptyBorder()); // Clear default border
+        mealPanel.setBorder(new RoundedBorder(20)); // Add your custom rounded border
+        mealPanel.setBounds(26, 145, 350, 140);
+        backgroundPanel.add(mealPanel);
 
         // Fill-up form panel
         JPanel fillup = new JPanel() {
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        // Gradient from top (deep violet) to bottom (purple)
-        GradientPaint gradient = new GradientPaint(0, 0, new Color(0x702CFB), 0, getHeight(), new Color(0x5F26E3));
-        g2d.setPaint(gradient);
-        g2d.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20); // Rounded rectangle fill
-    }
-};
-fillup.setLayout(null);
-fillup.setOpaque(false); // Needed for custom paint
-fillup.setBorder(BorderFactory.createEmptyBorder());
-fillup.setBorder(new RoundedBorder(20)); // Your custom border class
-fillup.setBounds(26, 310, 350, 270);
-backgroundPanel.add(fillup);
-
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g;
+                // Gradient from top (deep violet) to bottom (purple)
+                GradientPaint gradient = new GradientPaint(0, 0, new Color(0x702CFB), 0, getHeight(), new Color(0x5F26E3));
+                g2d.setPaint(gradient);
+                g2d.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20); // Rounded rectangle fill
+            }
+        };
+        fillup.setLayout(null);
+        fillup.setOpaque(false); // Needed for custom paint
+        fillup.setBorder(BorderFactory.createEmptyBorder());
+        fillup.setBorder(new RoundedBorder(20)); // Your custom border class
+        fillup.setBounds(26, 310, 350, 270);
+        backgroundPanel.add(fillup);
 
         JLabel addFood = new JLabel("Want to add other foods?");
         addFood.setFont(new Font("Arial", Font.BOLD, 16));
@@ -124,53 +123,73 @@ backgroundPanel.add(fillup);
         macrosField.setBorder(createRoundedBorder(Color.WHITE));
         macrosField.setBounds(30, 210, 290, 40); // Absolute positioning
         fillup.add(macrosField);
-JButton addButton = new JButton("Add") {
-    @Override
-    protected void paintComponent(Graphics g) {
-        Graphics2D g2d = (Graphics2D) g.create();
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        // Gradient background (same style as GradientBoxLabel)
-        GradientPaint gradient = new GradientPaint(0, 0, new Color(0x702CFB), 0, getHeight(), new Color(0x5F26E3));
-        g2d.setPaint(gradient);
-        g2d.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20); // Rounded corners
+        JButton addButton = new JButton("Add") {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        super.paintComponent(g);
-        g2d.dispose();
-    }
+                // Gradient background (same style as GradientBoxLabel)
+                GradientPaint gradient = new GradientPaint(0, 0, new Color(0x702CFB), 0, getHeight(), new Color(0x5F26E3));
+                g2d.setPaint(gradient);
+                g2d.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20); // Rounded corners
 
-    @Override
-    protected void paintBorder(Graphics g) {
-        // Optional: Skip drawing border to keep it clean
-    }
-};
-addButton.setFont(new Font("Dialog", Font.BOLD, 14));
-addButton.setForeground(Color.WHITE);
-addButton.setFocusPainted(false);
-addButton.setOpaque(false); // Important for custom paint to work
-addButton.setContentAreaFilled(false); // Disable default fill
-addButton.setBorder(new EmptyBorder(5, 15, 5, 15)); // Padding
-addButton.setBounds(130, 608, 150, 30);
-addButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-backgroundPanel.add(addButton);
+                super.paintComponent(g);
+                g2d.dispose();
+            }
 
-JPanel totalPanel = new JPanel() {
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        // Gradient from top (deep violet) to bottom (purple)
-        GradientPaint gradient = new GradientPaint(0, 0, new Color(0x702CFB), 0, getHeight(), new Color(0x5F26E3));
-        g2d.setPaint(gradient);
-        g2d.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20); // Rounded rectangle fill
-    }
-};
-totalPanel.setLayout(null);
-totalPanel.setOpaque(false); // Needed for custom paint
-totalPanel.setBorder(BorderFactory.createEmptyBorder());
-totalPanel.setBounds(26, 660, 350, 40); // Set the bounds to the desired location and size
-backgroundPanel.add(totalPanel);
+            @Override
+            protected void paintBorder(Graphics g) {
+                // Optional: Skip drawing border to keep it clean
+            }
+        };
+        addButton.setFont(new Font("Dialog", Font.BOLD, 14));
+        addButton.setForeground(Color.WHITE);
+        addButton.setFocusPainted(false);
+        addButton.setOpaque(false); // Important for custom paint to work
+        addButton.setContentAreaFilled(false); // Disable default fill
+        addButton.setBorder(new EmptyBorder(5, 15, 5, 15)); // Padding
+        addButton.setBounds(130, 608, 150, 30);
+        addButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        backgroundPanel.add(addButton);
 
+        // Add ActionListener to the button
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String foodName = foodNameField.getText();
+                String calories = caloriesField.getText();
+                String macros = macrosField.getText();
+
+                // For now, print out the values (you can process or save these)
+                System.out.println("Food: " + foodName + ", Calories: " + calories + ", Macros: " + macros);
+
+                // Clear the fields after adding
+                foodNameField.setText("");
+                caloriesField.setText("");
+                macrosField.setText("");
+            }
+        });
+        backgroundPanel.add(addButton);
+
+
+        JPanel totalPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g;
+                // Gradient from top (deep violet) to bottom (purple)
+                GradientPaint gradient = new GradientPaint(0, 0, new Color(0x702CFB), 0, getHeight(), new Color(0x5F26E3));
+                g2d.setPaint(gradient);
+                g2d.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20); // Rounded rectangle fill
+            }
+        };
+        totalPanel.setLayout(null);
+        totalPanel.setOpaque(false); // Needed for custom paint
+        totalPanel.setBorder(BorderFactory.createEmptyBorder());
+        totalPanel.setBounds(26, 660, 350, 40); // Set the bounds to the desired location and size
+        backgroundPanel.add(totalPanel);
 
         JLabel totalCalories = new JLabel("Total Calories consumed:");
         totalCalories.setFont(new Font("Dialog", Font.BOLD, 13));
@@ -186,6 +205,23 @@ backgroundPanel.add(totalPanel);
         );
     }
 
+    // Background gradient panel
+    class GradientPanel extends JPanel {
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2d = (Graphics2D) g; // Declare and initialize g2d
+            Color color1 = new Color(153, 102, 204);  //rgb(50, 25, 65)
+            Color color2 = new Color(73, 39, 184); //rgb(73, 39, 184)
+            int width = getWidth();
+            int height = getHeight();
+            GradientPaint gp = new GradientPaint(0, 0, color1, 0, height, color2);
+            g2d.setPaint(gp);
+            g2d.fillRect(0, 0, width, height);
+        }
+    }
+
+    // Custom Rounded Border class
     static class RoundedBorder implements Border {
         private int radius;
 
@@ -210,43 +246,6 @@ backgroundPanel.add(totalPanel);
             g2.setColor(Color.WHITE);
             g2.setStroke(new BasicStroke(2));
             g2.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
-        }
-    }
-
-    private JPanel createRoundedPanel() {
-        JPanel panel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-                // Draw only border, no background fill
-                g2.setColor(Color.WHITE);
-                g2.setStroke(new BasicStroke(2));
-                g2.drawRoundRect(1, 1, getWidth() - 3, getHeight() - 3, 20, 20);
-
-                g2.dispose();
-            }
-        };
-        panel.setOpaque(false);
-        panel.setLayout(null); // Still using null layout for internal components
-        return panel;
-    }
-
-    // Background gradient panel
-    class GradientPanel extends JPanel {
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            Graphics2D g2d = (Graphics2D) g;
-            Color color1 = new Color(73, 39, 184); //rgb(73, 39, 184)
-          Color color2 = new Color(153, 102, 204);  //rgb(50, 25, 65)
-            int width = getWidth();
-            int height = getHeight();
-            GradientPaint gp = new GradientPaint(0, 0, color1, 0, height, color2);
-            g2d.setPaint(gp);
-            g2d.fillRect(0, 0, width, height);
         }
     }
 }
