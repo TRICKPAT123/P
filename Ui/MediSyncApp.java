@@ -161,19 +161,15 @@ public class MediSyncApp {
     }
 
     private void addFormPanel(ActionEvent e) {
-        if (panelCount >= 1) {
-            panelCount++;
-            return;
-        }
+        // Create a modal dialog for the form
+        JDialog dialog = new JDialog((JFrame) SwingUtilities.getWindowAncestor(formPanelContainer), "Add Medicine", true);
+        MedicineFormPanel form = new MedicineFormPanel(dialog, this::addReminderCard);
 
-        MedicineFormPanel form = new MedicineFormPanel(formPanelContainer, this::addReminderCard);
-        form.setMaximumSize(new Dimension(360, 270));
-        form.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-        formPanelContainer.add(form);
-        formPanelContainer.revalidate();
-        formPanelContainer.repaint();
-        panelCount--;
+        dialog.setUndecorated(true); // Optional: for a modern look
+        dialog.getContentPane().add(form);
+        dialog.pack();
+        dialog.setLocationRelativeTo(formPanelContainer);
+        dialog.setVisible(true);
     }
 
     private void addReminderCard(ReminderData data) {
@@ -329,9 +325,9 @@ public class MediSyncApp {
     private void checkAlarms() {
         String now = java.time.LocalTime.now().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"));
         for (ReminderData data : reminders) {
-            if (now.equals(data.time.trim())) {
+            if (!data.shown && now.equals(data.time.trim())) {
                 showAlarm(data);
-                // Optionally, mark as shown to avoid repeat
+                data.shown = true; // Mark as shown so it doesn't repeat
             }
         }
     }
